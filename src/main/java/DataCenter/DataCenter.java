@@ -1,10 +1,18 @@
-import java.util.*;
+package DataCenter;
+
+import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
+import java.sql.Connection;
 
 public class DataCenter extends JFrame implements ActionListener
 {
+    String host = "jdbc:sqlserver://chocan.database.windows.net:1433;database=ChocAnDatabase;user=shyde@chocan;password={your_password_here};encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30";
+    String uName = "shyde";
+    String uPass = "ILoveChoc1";
+
     private Button  modifyMemberBtn,
                     modifyProviderBtn,
                     addBtn,
@@ -30,18 +38,27 @@ public class DataCenter extends JFrame implements ActionListener
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new GridLayout(1,2));
 
-        modifyMemberBtn = new Button("Modify Member");
+        modifyMemberBtn = new Button("Modify Model.Member");
         modifyMemberBtn.addActionListener(this);
         modifyMemberBtn.setActionCommand("modifyMember");
         add(modifyMemberBtn);
 
-        modifyProviderBtn = new Button("Modify Provider");
+        modifyProviderBtn = new Button("Modify Model.Provider");
         modifyProviderBtn.addActionListener(this);
         modifyProviderBtn.setActionCommand("modifyProvider");
         add(modifyProviderBtn);
 
         setSize(500, 500);
         setVisible(true);
+
+        try
+        {
+            Connection con = DriverManager.getConnection(host, uName, uPass);
+        }
+        catch(SQLException e)
+        {
+            System.out.println("Test");
+        }
     }
 
     @Override
@@ -51,9 +68,9 @@ public class DataCenter extends JFrame implements ActionListener
         dispose();
 
         if(actionCommand.equals("modifyMember"))
-            new ModifyFrame("Member");
+            new ModifyFrame("Model.Member");
         else if(actionCommand.equals("modifyProvider"))
-            new ModifyFrame("Provider");
+            new ModifyFrame("Model.Provider");
     }
 
     public class ModifyFrame extends JFrame implements ActionListener
@@ -152,7 +169,7 @@ public class DataCenter extends JFrame implements ActionListener
             zipTxt.setEditable(true);
             add(zipTxt);
 
-            if(type.equals("Member"))
+            if(type.equals("Model.Member"))
             {
                 JComboBox statusList = new JComboBox(statuses);
                 add(statusList);
@@ -235,7 +252,7 @@ public class DataCenter extends JFrame implements ActionListener
             zipTxt.setEditable(true);
             add(zipTxt);
 
-            if(type.equals("Member"))
+            if(type.equals("Model.Member"))
             {
                 JComboBox statusList = new JComboBox(statuses);
                 add(statusList);
