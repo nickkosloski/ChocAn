@@ -1,3 +1,5 @@
+package Model;
+
 public interface People
 {
     String  fName = "",
