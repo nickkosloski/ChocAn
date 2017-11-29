@@ -1,6 +1,6 @@
 package DataCenter;
 
-import Utils.Resources;
+import Frames.DataCenter;
 
 public class ChocAnServiceDriver {
 
