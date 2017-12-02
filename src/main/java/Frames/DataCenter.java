@@ -1,5 +1,7 @@
 package Frames;
 
+import Utils.DatabaseHelper;
+
 import java.sql.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -21,23 +23,37 @@ public class DataCenter extends JFrame implements ActionListener, BasicFrame
         modifyProviderBtn.setActionCommand("modifyProvider");
         add(modifyProviderBtn);
 
-
         setSize(500, 500);
         setVisible(true);
 
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         setLocation(((dim.width - getSize().width)/2),((dim.height - getSize().height)/2));
 
+        Connection con = DatabaseHelper.connectToDb();
         try
         {
-            Connection con = DriverManager.getConnection(res.getConnection(), res.getUsername(), res.getPassword());
+            Statement testQuery = con.createStatement();
+
+            ResultSet answer = testQuery.executeQuery("select * from Provider");
+            while(answer.next())
+            {
+                System.out.println(answer.getString("LName"));
+            }
+
         }
-        catch(SQLException e)
+        catch(Exception e)
         {
             setVisible(false);
             dispose();
             new NoConnectionFrame();
-            System.out.println("Test");
+        }
+        finally{
+            try {
+                con.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
         }
     }
 
