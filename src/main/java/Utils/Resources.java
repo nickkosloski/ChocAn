@@ -20,7 +20,7 @@ public class Resources
 
            prop.load(input);
 
-           connString = prop.getProperty("database");
+           connString = prop.getProperty("databaseConnectionString");
            uName = prop.getProperty("dbusername");
            uPass = prop.getProperty("dbpassword");
        }
