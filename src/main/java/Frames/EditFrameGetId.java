@@ -36,7 +36,7 @@ public class EditFrameGetId extends JFrame implements ActionListener, BasicFrame
         backBtn.setActionCommand("back");
         add(backBtn);
 
-        setSize(500, 500);
+        setSize(500, 200);
         setVisible(true);
 
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
@@ -83,7 +83,7 @@ public class EditFrameGetId extends JFrame implements ActionListener, BasicFrame
                     else
                     {
                         dispose();
-                        new DataCenter();
+                        new DataCenterFrame();
                     }
                 }
             }
@@ -91,7 +91,7 @@ public class EditFrameGetId extends JFrame implements ActionListener, BasicFrame
             {
                 JOptionPane.showMessageDialog(this, "Unable to access database");
                 dispose();
-                new DataCenter();
+                new DataCenterFrame();
             }
         }
         else

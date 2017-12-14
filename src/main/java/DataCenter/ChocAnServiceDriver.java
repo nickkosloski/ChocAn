@@ -1,12 +1,12 @@
 package DataCenter;
 
-import Frames.DataCenter;
+import Frames.DataCenterFrame;
 
 public class ChocAnServiceDriver {
 
     public static void main(String[] args)
     {
 
-        DataCenter chocAnCenter = new DataCenter();
+        DataCenterFrame chocAnCenter = new DataCenterFrame();
     }
 }

@@ -6,7 +6,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.ResultSet;
 import java.sql.Statement;
 
 public class EditFrame extends JFrame implements ActionListener, BasicFrame
@@ -129,7 +128,7 @@ public class EditFrame extends JFrame implements ActionListener, BasicFrame
             }
 
             dispose();
-            new DataCenter();
+            new DataCenterFrame();
         }
         else
         {

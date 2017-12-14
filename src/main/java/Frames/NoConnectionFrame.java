@@ -33,6 +33,6 @@ public class NoConnectionFrame extends JFrame implements ActionListener, BasicFr
     public void actionPerformed(ActionEvent e)
     {
         dispose();
-        new DataCenter();
+        new DataCenterFrame();
     }
 }
