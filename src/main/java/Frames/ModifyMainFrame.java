@@ -7,13 +7,13 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
-public class DataCenter extends JFrame implements ActionListener, BasicFrame
+public class ModifyMainFrame extends JFrame implements ActionListener, BasicFrame
 {
-    public DataCenter()
+    public ModifyMainFrame()
     {
         super("ChocAn Data Center");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLayout(new GridLayout(1,2));
+        setLayout(new GridLayout(3,1));
 
         modifyMemberBtn.addActionListener(this);
         modifyMemberBtn.setActionCommand("modifyMember");
@@ -23,7 +23,11 @@ public class DataCenter extends JFrame implements ActionListener, BasicFrame
         modifyProviderBtn.setActionCommand("modifyProvider");
         add(modifyProviderBtn);
 
-        setSize(500, 500);
+        backBtn.addActionListener(this);
+        backBtn.setActionCommand("back");
+        add(backBtn);
+
+        setSize(500, 375);
         setVisible(true);
 
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
@@ -67,5 +71,7 @@ public class DataCenter extends JFrame implements ActionListener, BasicFrame
             new ModifyFrame("Member");
         else if(actionCommand.equals("modifyProvider"))
             new ModifyFrame("Provider");
+        else
+            new DataCenterFrame();
     }
 }

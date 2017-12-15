@@ -13,7 +13,7 @@ public class ModifyFrame extends JFrame implements ActionListener, BasicFrame
     {
         super("ChocAn Data Center");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLayout(new GridLayout(2,2));
+        setLayout(new GridLayout(4,1));
 
         this.type = type;
 
@@ -56,6 +56,6 @@ public class ModifyFrame extends JFrame implements ActionListener, BasicFrame
         else if(actionCommand.equals("delete"))
             new DeleteFrame(type);
         else
-            new DataCenter();
+            new DataCenterFrame();
     }
 }

@@ -6,7 +6,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.ResultSet;
 import java.sql.Statement;
 
 public class DeleteFrame extends JFrame implements ActionListener, BasicFrame
@@ -35,7 +34,7 @@ public class DeleteFrame extends JFrame implements ActionListener, BasicFrame
         backBtn.setActionCommand("back");
         add(backBtn);
 
-        setSize(500, 500);
+        setSize(500, 200);
         setVisible(true);
 
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
@@ -86,7 +85,7 @@ public class DeleteFrame extends JFrame implements ActionListener, BasicFrame
             }
 
             dispose();
-            new DataCenter();
+            new DataCenterFrame();
         }
         else
         {
