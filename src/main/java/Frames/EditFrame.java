@@ -1,139 +1,175 @@
 package Frames;
 
+import Utils.DatabaseHelper;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.sql.Statement;
+
+import static javax.swing.JOptionPane.ERROR_MESSAGE;
 
 public class EditFrame extends JFrame implements ActionListener, BasicFrame
 {
     String type = "";
+    String idNum = "";
 
     public EditFrame(String type, String idNum)
     {
         super("ChocAn Data Center");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLayout(new GridLayout(18,1));
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setLayout(new GridLayout(19,1));
 
         this.type = type;
+        this.idNum = idNum;
 
         message.setText("Only fill out fields that need to be changed.");
         message.setEditable(false);
         message.setForeground(Color.RED);
-        add(message);
+        this.add(message);
 
-        TextField blank = new TextField("", 0);
-        blank.setEditable(false);
-        add(blank);
-
-        add(idLabel);
+        this.add(idLabel);
         idNumberTxt.setText(idNum);
         idNumberTxt.setEditable(false);
-        add(idNumberTxt);
+        this.add(idNumberTxt);
 
-        add(fNameLabel);
+        this.add(fNameLabel);
         fNameTxt.setEditable(true);
-        add(fNameTxt);
+        this.add(fNameTxt);
 
-        add(lNameLabel);
+        this.add(lNameLabel);
         lNameTxt.setEditable(true);
-        add(lNameTxt);
+        this.add(lNameTxt);
 
-        add(addressLabel);
+        this.add(addressLabel);
         addressTxt.setEditable(true);
-        add(addressTxt);
+        this.add(addressTxt);
 
-        add(cityLabel);
+        this.add(cityLabel);
         cityTxt.setEditable(true);
-        add(cityTxt);
+        this.add(cityTxt);
 
-        add(stateLabel);
+        this.add(stateLabel);
         stateTxt.setEditable(true);
-        add(stateTxt);
+        this.add(stateTxt);
 
-        add(zipLabel);
+        this.add(zipLabel);
         zipTxt.setEditable(true);
-        add(zipTxt);
+        this.add(zipTxt);
 
         if(type.equals("Member"))
         {
-            add(statusLabel);
-            JComboBox statusList = new JComboBox(statuses);
+            this.add(statusLabel);
             statusList.setBackground(Color.WHITE);
-            add(statusList);
+            this.add(statusList);
         }
 
         enterBtn.addActionListener(this);
         enterBtn.setActionCommand("enter");
-        add(enterBtn);
+        this.add(enterBtn);
 
         backBtn.addActionListener(this);
         backBtn.setActionCommand("back");
-        add(backBtn);
+        this.add(backBtn);
 
-        setSize(500, 500);
-        setVisible(true);
+        this.setSize(500, 500);
+        this.setVisible(true);
 
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-        setLocation(((dim.width - getSize().width)/2),((dim.height - getSize().height)/2));
+        this.setLocation(((dim.width - getSize().width)/2),((dim.height - getSize().height)/2));
     }
 
     @Override
     public void actionPerformed(ActionEvent e)
     {
+        this.dispose();
         String actionCommand = e.getActionCommand();
 
         if(actionCommand.equals("enter"))
         {
+            Connection con = DatabaseHelper.connectToDb();
             try
             {
-                Connection con = DriverManager.getConnection(res.getConnection(), res.getUsername(), res.getPassword());
                 Statement stmt = con.createStatement();
-                String queryStmt = "update " + type + "set";
+                String queryStmt = "update " + type + " set ";
 
                 if(!fNameTxt.getText().equalsIgnoreCase(""))
-                    queryStmt += "FName = " + fNameTxt.getText();
+                    queryStmt += "FName = '" + fNameTxt.getText() + "' ";
 
                 if(!lNameTxt.getText().equalsIgnoreCase(""))
-                    queryStmt += "LName = " + lNameTxt.getText();
+                {
+                    if(queryStmt.contains("="))
+                        queryStmt += ",";
+                    queryStmt += "LName = '" + lNameTxt.getText() + "' ";
+                }
 
                 if(!addressTxt.getText().equalsIgnoreCase(""))
-                    queryStmt += "Address = " + addressTxt.getText();
+                {
+                    if (queryStmt.contains("="))
+                        queryStmt += ",";
+                    queryStmt += "Address = '" + addressTxt.getText() + "' ";
+                }
 
                 if(!cityTxt.getText().equalsIgnoreCase(""))
-                    queryStmt += "City = " + cityTxt.getText();
+                {
+                    if(queryStmt.contains("="))
+                        queryStmt += ",";
+                    queryStmt += "City = '" + cityTxt.getText() + "' ";
+                }
 
                 if(!stateTxt.getText().equalsIgnoreCase(""))
-                    queryStmt += "State = " + stateTxt.getText();
+                {
+                    if(queryStmt.contains("="))
+                        queryStmt += ",";
+                    queryStmt += "State = '" + stateTxt.getText() + "' ";
+                }
 
-                if(!zipTxt.getText().equalsIgnoreCase(""))
+                    if(!zipTxt.getText().equalsIgnoreCase(""))
+                {
+                    if(queryStmt.contains("="))
+                        queryStmt += ",";
                     queryStmt += "ZipCode = " + zipTxt.getText();
+                }
+
+                    if(type.equalsIgnoreCase("Member"))
+                {
+                    if(queryStmt.contains("="))
+                        queryStmt += ",";
+
+                    int option = statusList.getSelectedIndex();
+                    queryStmt += "Status = '" + statuses[option] + "' ";
+                }
 
                 if(type.equalsIgnoreCase("Member"))
-                    queryStmt += "Status = valid";
+                    queryStmt += "where MemberId = " + idNum + ";";
+                else
+                    queryStmt += " where ProviderId = " + idNum + ";";
 
-                queryStmt += ";";
+                stmt.executeUpdate(queryStmt);
 
-                stmt.executeQuery(queryStmt);
-                con.close();
-
-                JOptionPane.showMessageDialog(this, type + " Successfully Added");
+                JOptionPane.showMessageDialog(this, type + " Successfully Edited");
             }
-            catch(Exception exception)
+            catch(SQLException exception)
             {
-                JOptionPane.showMessageDialog(this, "Unable to add" + type + "\nDue to" + exception.getMessage());
+                JOptionPane.showMessageDialog(this, "Unable to edit" + type + "\nDue to" + exception.getMessage(), "Error Message", ERROR_MESSAGE);
             }
-
-            dispose();
+            finally
+            {
+                try
+                {
+                    con.close();
+                } catch (SQLException exception)
+                {
+                    exception.printStackTrace();
+                }
+            }
             new DataCenterFrame();
         }
         else
-        {
-            dispose();
             new EditFrameGetId(type);
-        }
     }
 }

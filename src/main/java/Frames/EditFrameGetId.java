@@ -1,5 +1,7 @@
 package Frames;
 
+import Utils.DatabaseHelper;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -16,46 +18,48 @@ public class EditFrameGetId extends JFrame implements ActionListener, BasicFrame
     public EditFrameGetId(String type)
     {
         super("ChocAn Data Center");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLayout(new GridLayout(4, 1));
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setLayout(new GridLayout(4, 1));
 
         this.type = type;
 
         message.setText("Enter " + type + " ID Number");
         message.setEditable(false);
-        add(message);
+        this.add(message);
 
         idNumberTxt.setEditable(true);
-        add(idNumberTxt);
+        this.add(idNumberTxt);
 
         enterBtn.addActionListener(this);
         enterBtn.setActionCommand("enter");
-        add(enterBtn);
+        this.add(enterBtn);
 
         backBtn.addActionListener(this);
         backBtn.setActionCommand("back");
-        add(backBtn);
+        this.add(backBtn);
 
-        setSize(500, 200);
-        setVisible(true);
+        this.setSize(500, 200);
+        this.setVisible(true);
 
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-        setLocation(((dim.width - getSize().width)/2),((dim.height - getSize().height)/2));
+        this.setLocation(((dim.width - getSize().width)/2),((dim.height - getSize().height)/2));
     }
 
     @Override
     public void actionPerformed(ActionEvent e)
     {
         String actionCommand = e.getActionCommand();
+        this.dispose();
         String idNum = idNumberTxt.getText();
+        Boolean isValid = false;
 
         if(actionCommand.equals("enter"))
         {
+            Connection con = DatabaseHelper.connectToDb();
             try
             {
-                Connection con = DriverManager.getConnection(res.getConnection(), res.getUsername(), res.getPassword());
                 Statement stmt = con.createStatement();
-                String queryStmt = "select * from " + type + "where ";
+                String queryStmt = "select * from " + type + " where ";
 
                 if(type.equalsIgnoreCase("Member"))
                     queryStmt += "MemberId = " + idNum + ";";
@@ -64,10 +68,11 @@ public class EditFrameGetId extends JFrame implements ActionListener, BasicFrame
 
                 ResultSet rs = stmt.executeQuery(queryStmt);
 
-                if(rs.first())
+                isValid = rs.next();
+
+                if(isValid)
                 {
                     con.close();
-                    dispose();
                     new EditFrame(type, idNum);
                 }
                 else
@@ -76,27 +81,19 @@ public class EditFrameGetId extends JFrame implements ActionListener, BasicFrame
                     int reply = JOptionPane.showConfirmDialog(this, type + " ID not found. Try again?", "ID not found", JOptionPane.YES_NO_OPTION);
 
                     if(reply == JOptionPane.YES_OPTION)
-                    {
-                        dispose();
                         new EditFrameGetId(type);
-                    }
                     else
-                    {
-                        dispose();
                         new DataCenterFrame();
-                    }
                 }
             }
             catch(Exception exception)
             {
-                JOptionPane.showMessageDialog(this, "Unable to access database");
-                dispose();
+                JOptionPane.showMessageDialog(this, exception);
                 new DataCenterFrame();
             }
         }
         else
         {
-            dispose();
             new ModifyFrame(type);
         }
     }

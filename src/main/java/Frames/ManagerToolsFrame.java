@@ -36,7 +36,7 @@ public class ManagerToolsFrame extends JFrame implements ActionListener, BasicFr
         setLocation(((dim.width - getSize().width)/2),((dim.height - getSize().height)/2));
     }
 
-    //    @Override
+    @Override
     public void actionPerformed(ActionEvent e)
     {
         String actionCommand = e.getActionCommand();

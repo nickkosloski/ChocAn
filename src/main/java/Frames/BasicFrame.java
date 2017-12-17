@@ -47,5 +47,5 @@ public interface BasicFrame
 
     public String[] statuses = {"Valid", "Suspended", "Canceled"};
 
-    public Resources res = new Resources();
+    public JComboBox statusList = new JComboBox(statuses);
 }

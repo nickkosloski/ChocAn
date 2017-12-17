@@ -12,42 +12,42 @@ public class ModifyFrame extends JFrame implements ActionListener, BasicFrame
     public ModifyFrame(String type)
     {
         super("ChocAn Data Center");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLayout(new GridLayout(4,1));
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setLayout(new GridLayout(4,1));
 
         this.type = type;
 
         addBtn.setLabel("Add " + type);
         addBtn.addActionListener(this);
         addBtn.setActionCommand("add");
-        add(addBtn);
+        this.add(addBtn);
 
         editBtn.setLabel("Edit " + type);
         editBtn.addActionListener(this);
         editBtn.setActionCommand("edit");
-        add(editBtn);
+        this.add(editBtn);
 
         deleteBtn.setLabel("Delete " + type);
         deleteBtn.addActionListener(this);
         deleteBtn.setActionCommand("delete");
-        add(deleteBtn);
+        this.add(deleteBtn);
 
         backBtn.addActionListener(this);
         backBtn.setActionCommand("back");
-        add(backBtn);
+        this.add(backBtn);
 
-        setSize(500, 500);
-        setVisible(true);
+        this.setSize(500, 500);
+        this.setVisible(true);
 
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-        setLocation(((dim.width - getSize().width)/2),((dim.height - getSize().height)/2));
+        this.setLocation(((dim.width - getSize().width)/2),((dim.height - getSize().height)/2));
     }
 
     @Override
     public void actionPerformed(ActionEvent e)
     {
         String actionCommand = e.getActionCommand();
-        dispose();
+        this.dispose();
 
         if(actionCommand.equals("add"))
             new AddFrame(type);
@@ -56,6 +56,6 @@ public class ModifyFrame extends JFrame implements ActionListener, BasicFrame
         else if(actionCommand.equals("delete"))
             new DeleteFrame(type);
         else
-            new DataCenterFrame();
+            new ModifyMainFrame();
     }
 }

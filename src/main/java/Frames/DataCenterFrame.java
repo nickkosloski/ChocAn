@@ -1,6 +1,7 @@
 package Frames;
 
 import Utils.DatabaseHelper;
+import DataCenter.ChocAnServiceDriver;
 
 import java.sql.*;
 import java.awt.*;
@@ -12,29 +13,29 @@ public class DataCenterFrame extends JFrame implements ActionListener, BasicFram
     public DataCenterFrame()
     {
         super("ChocAn Data Center");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLayout(new GridLayout(2,1));
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setLayout(new GridLayout(2,1));
 
         managerBtn.addActionListener(this);
         managerBtn.setActionCommand("manager");
-        add(managerBtn);
+        this.add(managerBtn);
 
         modifyBtn.addActionListener(this);
         modifyBtn.setActionCommand("modify");
-        add(modifyBtn);
+        this.add(modifyBtn);
 
-        setSize(500, 250);
-        setVisible(true);
+        this.setSize(500, 250);
+        this.setVisible(true);
 
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-        setLocation(((dim.width - getSize().width)/2),((dim.height - getSize().height)/2));
+        this.setLocation(((dim.width - getSize().width)/2),((dim.height - getSize().height)/2));
     }
 
     @Override
     public void actionPerformed(ActionEvent e)
     {
         String actionCommand = e.getActionCommand();
-        dispose();
+        this.dispose();
 
         if(actionCommand.equals("manager"))
             new ManagerLoginFrame();
