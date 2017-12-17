@@ -7,28 +7,48 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 
 import static javax.swing.JOptionPane.ERROR_MESSAGE;
 
-public class EditFrame extends JFrame implements ActionListener, BasicFrame
+public class EditFrame extends JFrame implements ActionListener
 {
     String type = "";
     String idNum = "";
+    String[] statuses = {"Valid", "Suspended", "Canceled"};
+
+    Button  enterBtn = new Button("Enter");
+
+    TextField   fNameTxt = new TextField("", 10);
+    TextField   lNameTxt = new TextField("", 15);
+    TextField   addressTxt = new TextField("", 25);
+    TextField   cityTxt = new TextField("", 14);
+    TextField   stateTxt = new TextField("", 2);
+    TextField   zipTxt = new TextField("", 5);
+    TextField   idNumberTxt = new TextField("", 9);
+
+    JLabel   message = new JLabel("Only fill out fields that need to be changed.");
+    JLabel fNameLabel = new JLabel("First Name (10 characters)");
+    JLabel lNameLabel = new JLabel("Last Name (15 characters)");
+    JLabel addressLabel = new JLabel("Address (25 characters)");
+    JLabel cityLabel = new JLabel("City (14 characters)");
+    JLabel stateLabel = new JLabel("State (2 characters)");
+    JLabel zipLabel = new JLabel("Zip Code (5 characters)");
+    JLabel idLabel = new JLabel("ID Number (9 Characters)");
+    JLabel statusLabel = new JLabel("Status (pick one)");
+
+    public JComboBox statusList = new JComboBox(statuses);
 
     public EditFrame(String type, String idNum)
     {
         super("ChocAn Data Center");
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         this.setLayout(new GridLayout(19,1));
 
         this.type = type;
         this.idNum = idNum;
 
-        message.setText("Only fill out fields that need to be changed.");
-        message.setEditable(false);
         message.setForeground(Color.RED);
         this.add(message);
 
@@ -72,21 +92,16 @@ public class EditFrame extends JFrame implements ActionListener, BasicFrame
         enterBtn.setActionCommand("enter");
         this.add(enterBtn);
 
-        backBtn.addActionListener(this);
-        backBtn.setActionCommand("back");
-        this.add(backBtn);
-
         this.setSize(500, 500);
         this.setVisible(true);
 
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-        this.setLocation(((dim.width - getSize().width)/2),((dim.height - getSize().height)/2));
+        setLocation(((dim.width - getSize().width)/2),((dim.height - getSize().height)/2));
     }
 
     @Override
     public void actionPerformed(ActionEvent e)
     {
-        this.dispose();
         String actionCommand = e.getActionCommand();
 
         if(actionCommand.equals("enter"))
@@ -152,6 +167,14 @@ public class EditFrame extends JFrame implements ActionListener, BasicFrame
                 stmt.executeUpdate(queryStmt);
 
                 JOptionPane.showMessageDialog(this, type + " Successfully Edited");
+
+                idNumberTxt.setText("");
+                fNameTxt.setText("");
+                lNameTxt.setText("");
+                addressTxt.setText("");
+                cityTxt.setText("");
+                stateTxt.setText("");
+                zipTxt.setText("");
             }
             catch(SQLException exception)
             {
@@ -167,9 +190,6 @@ public class EditFrame extends JFrame implements ActionListener, BasicFrame
                     exception.printStackTrace();
                 }
             }
-            new DataCenterFrame();
         }
-        else
-            new EditFrameGetId(type);
     }
 }

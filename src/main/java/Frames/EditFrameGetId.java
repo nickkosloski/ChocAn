@@ -6,26 +6,27 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.Statement;
+import java.sql.*;
 
-public class EditFrameGetId extends JFrame implements ActionListener, BasicFrame
+import static javax.swing.JOptionPane.ERROR_MESSAGE;
+
+public class EditFrameGetId extends JPanel implements ActionListener
 {
     String type = "";
 
+    Button  enterBtn = new Button("Enter");
+
+    TextField   idNumberTxt = new TextField("", 9);
+
+    JLabel idLabel = new JLabel("ID Number (9 Characters)");
+
     public EditFrameGetId(String type)
     {
-        super("ChocAn Data Center");
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setLayout(new GridLayout(4, 1));
+        this.setLayout(new GridLayout(19,1));
 
         this.type = type;
 
-        message.setText("Enter " + type + " ID Number");
-        message.setEditable(false);
-        this.add(message);
+        this.add(idLabel);
 
         idNumberTxt.setEditable(true);
         this.add(idNumberTxt);
@@ -34,24 +35,15 @@ public class EditFrameGetId extends JFrame implements ActionListener, BasicFrame
         enterBtn.setActionCommand("enter");
         this.add(enterBtn);
 
-        backBtn.addActionListener(this);
-        backBtn.setActionCommand("back");
-        this.add(backBtn);
-
         this.setSize(500, 200);
-        this.setVisible(true);
-
-        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-        this.setLocation(((dim.width - getSize().width)/2),((dim.height - getSize().height)/2));
     }
 
     @Override
     public void actionPerformed(ActionEvent e)
     {
         String actionCommand = e.getActionCommand();
-        this.dispose();
         String idNum = idNumberTxt.getText();
-        Boolean isValid = false;
+        Boolean isValid;
 
         if(actionCommand.equals("enter"))
         {
@@ -71,30 +63,24 @@ public class EditFrameGetId extends JFrame implements ActionListener, BasicFrame
                 isValid = rs.next();
 
                 if(isValid)
-                {
-                    con.close();
                     new EditFrame(type, idNum);
-                }
                 else
-                {
-                    con.close();
-                    int reply = JOptionPane.showConfirmDialog(this, type + " ID not found. Try again?", "ID not found", JOptionPane.YES_NO_OPTION);
-
-                    if(reply == JOptionPane.YES_OPTION)
-                        new EditFrameGetId(type);
-                    else
-                        new DataCenterFrame();
-                }
+                    JOptionPane.showMessageDialog(this, "ID Not found", "Error Message", ERROR_MESSAGE);
             }
             catch(Exception exception)
             {
                 JOptionPane.showMessageDialog(this, exception);
-                new DataCenterFrame();
             }
-        }
-        else
-        {
-            new ModifyFrame(type);
+            finally
+            {
+                try
+                {
+                    con.close();
+                } catch (SQLException exception)
+                {
+                    exception.printStackTrace();
+                }
+            }
         }
     }
 }

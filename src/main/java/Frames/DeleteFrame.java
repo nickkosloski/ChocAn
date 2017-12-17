@@ -7,21 +7,25 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 
 import static javax.swing.JOptionPane.ERROR_MESSAGE;
 
-public class DeleteFrame extends JFrame implements ActionListener, BasicFrame
+public class DeleteFrame extends JPanel implements ActionListener
 {
     String type = "";
 
+    Button  enterBtn = new Button("Enter");
+
+    TextField   idNumberTxt = new TextField("", 9);
+
+    JLabel idLabel = new JLabel("ID Number (9 Characters)");
+
+
     public DeleteFrame(String type)
     {
-        super("ChocAn Data Center");
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setLayout(new GridLayout(4,1));
+        this.setLayout(new GridLayout(19,1));
 
         this.type = type;
 
@@ -35,22 +39,12 @@ public class DeleteFrame extends JFrame implements ActionListener, BasicFrame
         enterBtn.setActionCommand("enter");
         this.add(enterBtn);
 
-        backBtn.addActionListener(this);
-        backBtn.setActionCommand("back");
-        this.add(backBtn);
-
-        this.setSize(500, 200);
-        this.setVisible(true);
-
-        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-        this.setLocation(((dim.width - getSize().width)/2),((dim.height - getSize().height)/2));
     }
 
     @Override
     public void actionPerformed(ActionEvent e)
     {
         String actionCommand = e.getActionCommand();
-        this.dispose();
         String idNum = idNumberTxt.getText();
 
         if(actionCommand.equals("enter"))
@@ -77,6 +71,7 @@ public class DeleteFrame extends JFrame implements ActionListener, BasicFrame
 
                     stmt.executeUpdate(queryStmt);
                     JOptionPane.showMessageDialog(this, type + " Successfully Deleted");
+                    idNumberTxt.setText("");
 
                 }
                 catch(Exception exception)
@@ -98,10 +93,6 @@ public class DeleteFrame extends JFrame implements ActionListener, BasicFrame
             {
                 JOptionPane.showMessageDialog(this, type + " NOT Deleted");
             }
-
-            new DataCenterFrame();
         }
-        else
-            new ModifyFrame(type);
     }
 }
