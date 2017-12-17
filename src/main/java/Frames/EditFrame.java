@@ -7,6 +7,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
 
@@ -109,7 +110,7 @@ public class EditFrame extends JFrame implements ActionListener
             Connection con = DatabaseHelper.connectToDb();
             try
             {
-                Statement stmt = con.createStatement();
+                PreparedStatement stmt;
                 String queryStmt = "update " + type + " set ";
 
                 if(!fNameTxt.getText().equalsIgnoreCase(""))
@@ -164,7 +165,8 @@ public class EditFrame extends JFrame implements ActionListener
                 else
                     queryStmt += " where ProviderId = " + idNum + ";";
 
-                stmt.executeUpdate(queryStmt);
+                stmt = con.prepareStatement(queryStmt);
+                stmt.executeUpdate();
 
                 JOptionPane.showMessageDialog(this, type + " Successfully Edited");
 

@@ -50,7 +50,7 @@ public class EditFrameGetId extends JPanel implements ActionListener
             Connection con = DatabaseHelper.connectToDb();
             try
             {
-                Statement stmt = con.createStatement();
+                PreparedStatement stmt;
                 String queryStmt = "select * from " + type + " where ";
 
                 if(type.equalsIgnoreCase("Member"))
@@ -58,7 +58,8 @@ public class EditFrameGetId extends JPanel implements ActionListener
                 else
                     queryStmt += "ProviderId = " + idNum + ";";
 
-                ResultSet rs = stmt.executeQuery(queryStmt);
+                stmt = con.prepareStatement(queryStmt);
+                ResultSet rs = stmt.executeQuery();
 
                 isValid = rs.next();
 

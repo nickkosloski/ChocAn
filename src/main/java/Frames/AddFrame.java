@@ -97,7 +97,7 @@ public class AddFrame extends JPanel implements ActionListener
             Connection con = DatabaseHelper.connectToDb();
             try
             {
-                Statement stmt = con.createStatement();
+                PreparedStatement stmt;
                 String queryStmt = "insert into " + type + " (";
 
                 if(type.equalsIgnoreCase("Member"))
@@ -128,7 +128,8 @@ public class AddFrame extends JPanel implements ActionListener
                 else
                     queryStmt += ");";
 
-                stmt.executeUpdate(queryStmt);
+                stmt = con.prepareStatement(queryStmt);
+                stmt.executeUpdate();
 
                 JOptionPane.showMessageDialog(this, type + " Successfully Added");
 

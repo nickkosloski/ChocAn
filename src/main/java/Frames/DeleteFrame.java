@@ -7,6 +7,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
 
@@ -60,7 +61,7 @@ public class DeleteFrame extends JPanel implements ActionListener
                 Connection con = DatabaseHelper.connectToDb();
                 try
                 {
-                    Statement stmt = con.createStatement();
+                    PreparedStatement stmt;
 
                     String queryStmt = "delete from " + type + " where ";
 
@@ -69,7 +70,8 @@ public class DeleteFrame extends JPanel implements ActionListener
                     else
                         queryStmt += "ProviderId='" + idNum + "';";
 
-                    stmt.executeUpdate(queryStmt);
+                    stmt = con.prepareStatement(queryStmt);
+                    stmt.executeUpdate();
                     JOptionPane.showMessageDialog(this, type + " Successfully Deleted");
                     idNumberTxt.setText("");
 
