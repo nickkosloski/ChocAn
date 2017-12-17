@@ -5,13 +5,17 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class ManagerToolsFrame extends JFrame implements ActionListener, BasicFrame
+public class ManagerToolsFrame extends JFrame implements ActionListener
 {
+    Button  memberRptBtn = new Button("Member Report");
+    Button  providerRptBtn = new Button("Provider Report");
+    Button  weeklyMgrRptBtn = new Button("Weekly Manager Report");
+
     public ManagerToolsFrame()
     {
         super("ChocAn Data Center");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLayout(new GridLayout(4,1));
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        setLayout(new GridLayout(19,1));
 
         memberRptBtn.addActionListener(this);
         memberRptBtn.setActionCommand("member");
@@ -25,10 +29,6 @@ public class ManagerToolsFrame extends JFrame implements ActionListener, BasicFr
         weeklyMgrRptBtn.setActionCommand("manager");
         add(weeklyMgrRptBtn);
 
-        backBtn.addActionListener(this);
-        backBtn.setActionCommand("back");
-        add(backBtn);
-
         setSize(500, 500);
         setVisible(true);
 
@@ -36,7 +36,7 @@ public class ManagerToolsFrame extends JFrame implements ActionListener, BasicFr
         setLocation(((dim.width - getSize().width)/2),((dim.height - getSize().height)/2));
     }
 
-    //    @Override
+    @Override
     public void actionPerformed(ActionEvent e)
     {
         String actionCommand = e.getActionCommand();
