@@ -14,7 +14,7 @@ public class ManagerToolsFrame extends JFrame implements ActionListener
     public ManagerToolsFrame()
     {
         super("ChocAn Data Center");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLayout(new GridLayout(19,1));
 
         memberRptBtn.addActionListener(this);
