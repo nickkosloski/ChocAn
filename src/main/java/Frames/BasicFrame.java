@@ -33,6 +33,15 @@ public interface BasicFrame
     public TextField   message = new TextField();
     public TextField   usernameTxt = new TextField();
     public TextField   passwordTxt = new TextField();
+    public TextField   currentTimeTxt = new TextField("", 14);
+    public TextField   dateProvidedTxt = new TextField("", 8);
+    public TextField   providerNumTxt = new TextField("", 10);
+    public TextField   memberNumTxt = new TextField("", 10);
+    public TextField   ServiceTxt = new TextField("", 6);
+    public TextField   CommentsTxt = new TextField("", 100);
+    public TextField   feeTxt = new TextField("", 10);
+
+
 
     public JLabel fNameLabel = new JLabel("First Name (10 characters)");
     public JLabel lNameLabel = new JLabel("Last Name (15 characters)");
@@ -44,6 +53,17 @@ public interface BasicFrame
     public JLabel statusLabel = new JLabel("Status (pick one)");
     public JLabel usernameLabel = new JLabel("Username");
     public JLabel passwordLabel = new JLabel("Password");
+    //public JLabel currentTimeLabel = new JLabel("Current Time(MM-DD-YYYY HH:MM:SS");
+    public JLabel dateProvided = new JLabel("Date of Service(MM-DD-YYYY)");
+    public JLabel providerNumLabel = new JLabel("Provider Number");
+    public JLabel memberNumLabel = new JLabel("Member number");
+    public JLabel serviceLabel = new JLabel("Serivce Code");
+    public JLabel commentsLabel = new JLabel("Comments(Optional)");
+    public JLabel feeLabel = new JLabel("Provider Fee");
+
+
+
+
 
     public String[] statuses = {"Valid", "Suspended", "Canceled"};
 

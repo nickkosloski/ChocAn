@@ -13,8 +13,8 @@ import java.sql.Statement;
 
 public class ServiceForm extends JFrame implements ActionListener, BasicFrame
 {
-    String type = "";
-    public ServiceForm(String Type){
+    String type = "FORM";
+    public ServiceForm(String Date){
         super("ChocAn Data Center");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new GridLayout(19,1));
@@ -25,10 +25,24 @@ public class ServiceForm extends JFrame implements ActionListener, BasicFrame
         message.setEditable(false);
         message.setForeground(Color.RED);
         add(message);
+/*
+        add(currentTimeLabel);
+        currentTimeTxt.setEditable(true);
+        currentTimeTxt.setText(String.valueOf(System.currentTimeMillis()));     //enter the time when writing to the database
+        add(currentTimeTxt);
+*/
+        add(dateProvided);
+        dateProvidedTxt.setEditable(true);
+        dateProvidedTxt.setText(Date);
+        add(dateProvidedTxt);
 
-        add(idLabel);
-        idNumberTxt.setEditable(true);
-        add(idNumberTxt);
+        add(providerNumLabel);
+        providerNumTxt.setEditable(true);
+        add(providerNumTxt);
+
+        add(memberNumLabel);
+        memberNumTxt.setEditable(true);
+        add(memberNumTxt);
 
         add(fNameLabel);
         fNameTxt.setEditable(true);
@@ -38,21 +52,18 @@ public class ServiceForm extends JFrame implements ActionListener, BasicFrame
         lNameTxt.setEditable(true);
         add(lNameTxt);
 
-        add(addressLabel);
-        addressTxt.setEditable(true);
-        add(addressTxt);
+        add(serviceLabel);
+        ServiceTxt.setEditable(true);
+        add(ServiceTxt);
 
-        add(cityLabel);
-        cityTxt.setEditable(true);
-        add(cityTxt);
+        add(feeLabel);
+        feeTxt.setEditable(true);
+        add(feeTxt);
 
-        add(stateLabel);
-        stateTxt.setEditable(true);
-        add(stateTxt);
+        add(commentsLabel);
+        CommentsTxt.setEditable(true);
+        add(CommentsTxt);
 
-        add(zipLabel);
-        zipTxt.setEditable(true);
-        add(zipTxt);
 
         if(type.equals("Member"))
         {
