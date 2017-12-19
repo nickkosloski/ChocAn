@@ -1,9 +1,7 @@
 package ReportTools;
 
 import Models.ManagerReport;
-import Models.MemberReport;
 import Models.ProviderWeek;
-import Models.ServiceEntry;
 import Utils.DatabaseHelper;
 
 import java.io.BufferedWriter;
@@ -13,7 +11,6 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 

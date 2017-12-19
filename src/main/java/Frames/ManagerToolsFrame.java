@@ -45,16 +45,12 @@ public class ManagerToolsFrame extends JFrame implements ActionListener
         ReportGeneratorProcessor processor = new ReportGeneratorProcessor();
         dispose();
 
-        if(actionCommand.equals("member")) {
-            //Do something for member Reports, you can take out println
+        if(actionCommand.equals("member"))
             processor.generateMemberReports();
-        }
         else if(actionCommand.equals("provider"))
-            //Do something for provider Reports, you can take out println
             processor.generateProviderReports();
         else if(actionCommand.equals("manager"))
-            //Do something for manager Reports, you can take out println
-            System.out.println("Manager");
+            processor.generateManagerReports();
         else
             new DataCenterFrame();
     }
