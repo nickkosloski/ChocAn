@@ -1,5 +1,7 @@
 package Frames;
 
+import ReportTools.ReportGeneratorProcessor;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -40,14 +42,16 @@ public class ManagerToolsFrame extends JFrame implements ActionListener
     public void actionPerformed(ActionEvent e)
     {
         String actionCommand = e.getActionCommand();
+        ReportGeneratorProcessor processor = new ReportGeneratorProcessor();
         dispose();
 
-        if(actionCommand.equals("member"))
+        if(actionCommand.equals("member")) {
             //Do something for member Reports, you can take out println
-            System.out.println("Member");
+            processor.generateMemberReports();
+        }
         else if(actionCommand.equals("provider"))
             //Do something for provider Reports, you can take out println
-            System.out.println("Provider");
+            processor.generateProviderReports();
         else if(actionCommand.equals("manager"))
             //Do something for manager Reports, you can take out println
             System.out.println("Manager");
