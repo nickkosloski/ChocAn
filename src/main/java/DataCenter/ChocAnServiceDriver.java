@@ -22,8 +22,8 @@ public class ChocAnServiceDriver {
                 Calendar.DAY_OF_WEEK,
                 Calendar.FRIDAY
         );
-        date.set(Calendar.HOUR, 21);
-        date.set(Calendar.MINUTE, 0);
+        date.set(Calendar.HOUR, 23);
+        date.set(Calendar.MINUTE, 55);
         date.set(Calendar.SECOND, 0);
         date.set(Calendar.MILLISECOND, 0);
         timer.schedule(

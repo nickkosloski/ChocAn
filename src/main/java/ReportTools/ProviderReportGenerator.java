@@ -48,7 +48,7 @@ public class ProviderReportGenerator {
                 "join [Service] [serv]" +
                 "on [fm].[ServiceCode] = [serv].[ServiceCode]" +
                 "where [fm].[ServiceProvidedDate] >= DATEADD (week , -1 , GETDATE() )" +
-                "order by [fm].[ServiceProvidedDate]";
+                "order by [fm].[CurrentDate]";
 
         Connection con = DatabaseHelper.connectToDb();
         Statement stmt = con.createStatement();
