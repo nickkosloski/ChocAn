@@ -1,17 +1,21 @@
 package Terminal;
+
 import Utils.DatabaseHelper;
-import java.util.Date;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import static javax.swing.JOptionPane.ERROR_MESSAGE;
 
-public class ServiceForm extends JFrame implements ActionListener {
+public class ServiceFee extends JFrame implements ActionListener {
 
     String[] statuses = {"Valid", "Suspended", "Canceled"};
 
@@ -33,7 +37,7 @@ public class ServiceForm extends JFrame implements ActionListener {
 
     public JComboBox statusList = new JComboBox(statuses);
 
-    public ServiceForm(String Date, String code, String memID) {
+    public ServiceFee(String Date, String code, String memID) {
 
             this.setLayout(new GridLayout(19, 1));
 
@@ -41,28 +45,7 @@ public class ServiceForm extends JFrame implements ActionListener {
             message.setForeground(Color.RED);
             this.add(message);
 
-            this.add(dateLabel);
-            dateTxt.setEditable(false);
-            dateTxt.setText(Date);
-            this.add(dateTxt);
 
-            this.add(providerNumLabel);
-            providerNumTxt.setEditable(true);
-            this.add(providerNumTxt);
-
-            this.add(memNumLabel);
-            memNumTxt.setEditable(false);
-            memNumTxt.setText(memID);
-            this.add(memNumTxt);
-
-            this.add(serviceCodeLabel);
-            serviceCodeTxt.setEditable(false);
-            serviceCodeTxt.setText(code);
-            this.add(serviceCodeTxt);
-
-            this.add(commentsLabel);
-            commentsTxt.setEditable(true);
-            this.add(commentsTxt);
 
 
             enterBtn.addActionListener(this);
