@@ -13,7 +13,7 @@ public class providerValidation extends JFrame{
 
     Connection con = DatabaseHelper.connectToDb();
 
-    TextField commentsTxt = new TextField("", 100);
+    JTextArea commentsTxt = new JTextArea(500,800);
 
     JLabel message = new JLabel(" ");
 
@@ -21,7 +21,7 @@ public class providerValidation extends JFrame{
     public providerValidation(String provNum) throws SQLException {
         String queryLine = "";
 
-        this.setLayout(new GridLayout(19, 1));
+        //this.setLayout(new GridLayout(19, 1));
 
 
 
@@ -43,12 +43,13 @@ public class providerValidation extends JFrame{
     public String formatQueryLine(String provNum) throws SQLException {
         String queryLine = "";
         Statement stmt = con.createStatement();
-        String queryStmt = "select * from PROVIDER where ProviderId =  '" + provNum + "'";
+        String queryStmt = "select * from FORM where ProviderId =  '" + provNum + "'";
         ResultSet rs = stmt.executeQuery(queryStmt);
 
-        while(!rs.next())
+        while(rs.next())
         {
-            queryLine += rs.getString("ServiceProvidedDate") + " " + rs.getString("MemberId") + " " + rs.getString("ServiceCode") + "\n";
+            queryLine += "Date Provided: " + rs.getString("ServiceProvidedDate") + " Member ID: " + rs.getString("MemberId") + " Service Code: " + rs.getString("ServiceCode") + "\n";
+
         }
 
         return queryLine;
