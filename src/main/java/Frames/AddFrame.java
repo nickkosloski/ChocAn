@@ -1,79 +1,90 @@
 package Frames;
 
+import Utils.DatabaseHelper;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.Statement;
+import java.sql.*;
 
-public class AddFrame extends JFrame implements ActionListener, BasicFrame
+import static javax.swing.JOptionPane.ERROR_MESSAGE;
+
+public class AddFrame extends JPanel implements ActionListener
 {
     String type = "";
+    String[] statuses = {"Valid", "Suspended", "Canceled"};
+
+    Button  enterBtn = new Button("Enter");
+
+    TextField   fNameTxt = new TextField("", 10);
+    TextField   lNameTxt = new TextField("", 15);
+    TextField   addressTxt = new TextField("", 25);
+    TextField   cityTxt = new TextField("", 14);
+    TextField   stateTxt = new TextField("", 2);
+    TextField   zipTxt = new TextField("", 5);
+    TextField   idNumberTxt = new TextField("", 9);
+
+    JLabel   message = new JLabel("All fields are required");
+    JLabel fNameLabel = new JLabel("First Name (10 characters)");
+    JLabel lNameLabel = new JLabel("Last Name (15 characters)");
+    JLabel addressLabel = new JLabel("Address (25 characters)");
+    JLabel cityLabel = new JLabel("City (14 characters)");
+    JLabel stateLabel = new JLabel("State (2 characters)");
+    JLabel zipLabel = new JLabel("Zip Code (5 characters)");
+    JLabel idLabel = new JLabel("ID Number (9 Characters)");
+    JLabel statusLabel = new JLabel("Status (pick one)");
+
+    public JComboBox statusList = new JComboBox(statuses);
 
     public AddFrame(String type)
     {
-        super("ChocAn Data Center");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLayout(new GridLayout(19,1));
+        this.setLayout(new GridLayout(19,1));
 
         this.type = type;
 
-        message.setText("All fields are required");
-        message.setEditable(false);
         message.setForeground(Color.RED);
-        add(message);
+        this.add(message);
 
-        add(idLabel);
+        this.add(idLabel);
         idNumberTxt.setEditable(true);
-        add(idNumberTxt);
+        this.add(idNumberTxt);
 
-        add(fNameLabel);
+        this.add(fNameLabel);
         fNameTxt.setEditable(true);
-        add(fNameTxt);
+        this.add(fNameTxt);
 
-        add(lNameLabel);
+        this.add(lNameLabel);
         lNameTxt.setEditable(true);
-        add(lNameTxt);
+        this.add(lNameTxt);
 
-        add(addressLabel);
+        this.add(addressLabel);
         addressTxt.setEditable(true);
-        add(addressTxt);
+        this.add(addressTxt);
 
-        add(cityLabel);
+        this.add(cityLabel);
         cityTxt.setEditable(true);
-        add(cityTxt);
+        this.add(cityTxt);
 
-        add(stateLabel);
+        this.add(stateLabel);
         stateTxt.setEditable(true);
-        add(stateTxt);
+        this.add(stateTxt);
 
-        add(zipLabel);
+        this.add(zipLabel);
         zipTxt.setEditable(true);
-        add(zipTxt);
+        this.add(zipTxt);
 
         if(type.equals("Member"))
         {
-            add(statusLabel);
-            JComboBox statusList = new JComboBox(statuses);
+            this.add(statusLabel);
+
             statusList.setBackground(Color.WHITE);
-            add(statusList);
+            this.add(statusList);
         }
 
         enterBtn.addActionListener(this);
         enterBtn.setActionCommand("enter");
-        add(enterBtn);
-
-        backBtn.addActionListener(this);
-        backBtn.setActionCommand("back");
-        add(backBtn);
-
-        setSize(500, 500);
-        setVisible(true);
-
-        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-        setLocation(((dim.width - getSize().width)/2),((dim.height - getSize().height)/2));
+        this.add(enterBtn);
     }
 
     @Override
@@ -83,11 +94,11 @@ public class AddFrame extends JFrame implements ActionListener, BasicFrame
 
         if(actionCommand.equals("enter"))
         {
+            Connection con = DatabaseHelper.connectToDb();
             try
             {
-                Connection con = DriverManager.getConnection(res.getConnection(), res.getUsername(), res.getPassword());
-                Statement stmt = con.createStatement();
-                String queryStmt = "insert into " + type + "(";
+                PreparedStatement stmt;
+                String queryStmt = "insert into " + type + " (";
 
                 if(type.equalsIgnoreCase("Member"))
                     queryStmt += "MemberID, ";
@@ -102,35 +113,48 @@ public class AddFrame extends JFrame implements ActionListener, BasicFrame
                     queryStmt += ")";
 
                 queryStmt += "values (" + idNumberTxt.getText();
-                queryStmt += "'" + fNameTxt.getText();
-                queryStmt += "," + lNameTxt.getText();
-                queryStmt += "," + addressTxt.getText();
-                queryStmt += "," + cityTxt.getText();
-                queryStmt += "," + stateTxt.getText();
-                queryStmt += "," + zipTxt.getText();
+                queryStmt += ",'" + fNameTxt.getText();
+                queryStmt += "','" + lNameTxt.getText();
+                queryStmt += "','" + addressTxt.getText();
+                queryStmt += "','" + cityTxt.getText();
+                queryStmt += "','" + stateTxt.getText();
+                queryStmt += "'," + zipTxt.getText();
 
                 if(type.equalsIgnoreCase("Member"))
-                    queryStmt += ", valid);";
+                {
+                    int option = statusList.getSelectedIndex();
+                    queryStmt += ", '" + statuses[option] + "');";
+                }
                 else
                     queryStmt += ");";
 
-                stmt.executeQuery(queryStmt);
-                con.close();
+                stmt = con.prepareStatement(queryStmt);
+                stmt.executeUpdate();
 
                 JOptionPane.showMessageDialog(this, type + " Successfully Added");
-            }
-            catch(Exception exception)
-            {
-                JOptionPane.showMessageDialog(this, "Unable to add" + type + "\nDue to" + exception.getMessage());
-            }
 
-            dispose();
-            new DataCenterFrame();
-        }
-        else
-        {
-            dispose();
-            new ModifyFrame(type);
+                idNumberTxt.setText("");
+                fNameTxt.setText("");
+                lNameTxt.setText("");
+                addressTxt.setText("");
+                cityTxt.setText("");
+                stateTxt.setText("");
+                zipTxt.setText("");
+            }
+            catch(SQLException exception)
+            {
+                JOptionPane.showMessageDialog(this, "Unable to add " + type + "\nDue to " + exception.getMessage(),"Error Message", ERROR_MESSAGE);
+            }
+            finally
+            {
+                try
+                {
+                    con.close();
+                } catch (SQLException exception)
+                {
+                    exception.printStackTrace();
+                }
+            }
         }
     }
 }

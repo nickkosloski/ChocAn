@@ -5,13 +5,20 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class ManagerLoginFrame extends JFrame implements ActionListener, BasicFrame
+public class ManagerLoginFrame extends JPanel implements ActionListener
 {
+
+    TextField   usernameTxt = new TextField();
+    TextField   passwordTxt = new TextField();
+
+    JLabel usernameLabel = new JLabel("Username");
+    JLabel passwordLabel = new JLabel("Password");
+
+    Button  enterBtn = new Button("Enter");
+
     public ManagerLoginFrame()
     {
-        super("ChocAn Data Center");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLayout(new GridLayout(6, 1));
+        setLayout(new GridLayout(19, 1));
 
         add(usernameLabel);
         usernameTxt.setEditable(true);
@@ -25,9 +32,6 @@ public class ManagerLoginFrame extends JFrame implements ActionListener, BasicFr
         enterBtn.setActionCommand("enter");
         add(enterBtn);
 
-        backBtn.addActionListener(this);
-        backBtn.setActionCommand("back");
-        add(backBtn);
 
         setSize(500, 300);
         setVisible(true);
@@ -48,13 +52,7 @@ public class ManagerLoginFrame extends JFrame implements ActionListener, BasicFr
             //You'll probably want a pop up if username/password is wrong and resend them to this frame.
             //See EditFrameGetId
 
-            dispose();
             new ManagerToolsFrame();
-        }
-        else if(actionCommand.equals("back"))
-        {
-            dispose();
-            new DataCenterFrame();
         }
     }
 }

@@ -1,44 +1,45 @@
 package Frames;
 
+import Utils.DatabaseHelper;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
-import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.sql.Statement;
 
-public class DeleteFrame extends JFrame implements ActionListener, BasicFrame
+import static javax.swing.JOptionPane.ERROR_MESSAGE;
+
+public class DeleteFrame extends JPanel implements ActionListener
 {
     String type = "";
 
+    Button  enterBtn = new Button("Enter");
+
+    TextField   idNumberTxt = new TextField("", 9);
+
+    JLabel idLabel = new JLabel("ID Number (9 Characters)");
+
+
     public DeleteFrame(String type)
     {
-        super("ChocAn Data Center");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLayout(new GridLayout(4,1));
+        this.setLayout(new GridLayout(19,1));
 
         this.type = type;
 
         idLabel.setText(type + "ID Number");
-        add(idLabel);
+        this.add(idLabel);
 
         idNumberTxt.setEditable(true);
-        add(idNumberTxt);
+        this.add(idNumberTxt);
 
         enterBtn.addActionListener(this);
         enterBtn.setActionCommand("enter");
-        add(enterBtn);
+        this.add(enterBtn);
 
-        backBtn.addActionListener(this);
-        backBtn.setActionCommand("back");
-        add(backBtn);
-
-        setSize(500, 200);
-        setVisible(true);
-
-        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-        setLocation(((dim.width - getSize().width)/2),((dim.height - getSize().height)/2));
     }
 
     @Override
@@ -57,40 +58,43 @@ public class DeleteFrame extends JFrame implements ActionListener, BasicFrame
 
             if(reply == 0)
             {
+                Connection con = DatabaseHelper.connectToDb();
                 try
                 {
-                    Connection con = DriverManager.getConnection(res.getConnection(), res.getUsername(), res.getPassword());
-                    Statement stmt = con.createStatement();
+                    PreparedStatement stmt;
 
-                    String queryStmt = "delete from " + type + "where ";
+                    String queryStmt = "delete from " + type + " where ";
 
                     if(type.equalsIgnoreCase("Member"))
-                        queryStmt += "MemberId = " + idNum + ";";
+                        queryStmt += "MemberId='" + idNum + "';";
                     else
-                        queryStmt += "ProviderId = " + idNum + ";";
+                        queryStmt += "ProviderId='" + idNum + "';";
 
-                    stmt.executeQuery(queryStmt);
-                    con.close();
+                    stmt = con.prepareStatement(queryStmt);
+                    stmt.executeUpdate();
                     JOptionPane.showMessageDialog(this, type + " Successfully Deleted");
+                    idNumberTxt.setText("");
 
                 }
                 catch(Exception exception)
                 {
-                    JOptionPane.showMessageDialog(this, "Unable to access database");
+                    JOptionPane.showMessageDialog(this, "Unable to delete " + type + "\nDue to " + exception.getMessage(), "Error Message", ERROR_MESSAGE);
+                }
+                finally
+                {
+                    try
+                    {
+                        con.close();
+                    } catch (SQLException exception)
+                    {
+                        exception.printStackTrace();
+                    }
                 }
             }
             else
             {
                 JOptionPane.showMessageDialog(this, type + " NOT Deleted");
             }
-
-            dispose();
-            new DataCenterFrame();
-        }
-        else
-        {
-            dispose();
-            new ModifyFrame(type);
         }
     }
 }

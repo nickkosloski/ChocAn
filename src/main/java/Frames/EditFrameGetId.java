@@ -1,46 +1,41 @@
 package Frames;
 
+import Utils.DatabaseHelper;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.Statement;
+import java.sql.*;
 
-public class EditFrameGetId extends JFrame implements ActionListener, BasicFrame
+import static javax.swing.JOptionPane.ERROR_MESSAGE;
+
+public class EditFrameGetId extends JPanel implements ActionListener
 {
     String type = "";
 
+    Button  enterBtn = new Button("Enter");
+
+    TextField   idNumberTxt = new TextField("", 9);
+
+    JLabel idLabel = new JLabel("ID Number (9 Characters)");
+
     public EditFrameGetId(String type)
     {
-        super("ChocAn Data Center");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLayout(new GridLayout(4, 1));
+        this.setLayout(new GridLayout(19,1));
 
         this.type = type;
 
-        message.setText("Enter " + type + " ID Number");
-        message.setEditable(false);
-        add(message);
+        this.add(idLabel);
 
         idNumberTxt.setEditable(true);
-        add(idNumberTxt);
+        this.add(idNumberTxt);
 
         enterBtn.addActionListener(this);
         enterBtn.setActionCommand("enter");
-        add(enterBtn);
+        this.add(enterBtn);
 
-        backBtn.addActionListener(this);
-        backBtn.setActionCommand("back");
-        add(backBtn);
-
-        setSize(500, 200);
-        setVisible(true);
-
-        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-        setLocation(((dim.width - getSize().width)/2),((dim.height - getSize().height)/2));
+        this.setSize(500, 200);
     }
 
     @Override
@@ -48,56 +43,45 @@ public class EditFrameGetId extends JFrame implements ActionListener, BasicFrame
     {
         String actionCommand = e.getActionCommand();
         String idNum = idNumberTxt.getText();
+        Boolean isValid;
 
         if(actionCommand.equals("enter"))
         {
+            Connection con = DatabaseHelper.connectToDb();
             try
             {
-                Connection con = DriverManager.getConnection(res.getConnection(), res.getUsername(), res.getPassword());
-                Statement stmt = con.createStatement();
-                String queryStmt = "select * from " + type + "where ";
+                PreparedStatement stmt;
+                String queryStmt = "select * from " + type + " where ";
 
                 if(type.equalsIgnoreCase("Member"))
                     queryStmt += "MemberId = " + idNum + ";";
                 else
                     queryStmt += "ProviderId = " + idNum + ";";
 
-                ResultSet rs = stmt.executeQuery(queryStmt);
+                stmt = con.prepareStatement(queryStmt);
+                ResultSet rs = stmt.executeQuery();
 
-                if(rs.first())
-                {
-                    con.close();
-                    dispose();
+                isValid = rs.next();
+
+                if(isValid)
                     new EditFrame(type, idNum);
-                }
                 else
-                {
-                    con.close();
-                    int reply = JOptionPane.showConfirmDialog(this, type + " ID not found. Try again?", "ID not found", JOptionPane.YES_NO_OPTION);
-
-                    if(reply == JOptionPane.YES_OPTION)
-                    {
-                        dispose();
-                        new EditFrameGetId(type);
-                    }
-                    else
-                    {
-                        dispose();
-                        new DataCenterFrame();
-                    }
-                }
+                    JOptionPane.showMessageDialog(this, "ID Not found", "Error Message", ERROR_MESSAGE);
             }
             catch(Exception exception)
             {
-                JOptionPane.showMessageDialog(this, "Unable to access database");
-                dispose();
-                new DataCenterFrame();
+                JOptionPane.showMessageDialog(this, exception);
             }
-        }
-        else
-        {
-            dispose();
-            new ModifyFrame(type);
+            finally
+            {
+                try
+                {
+                    con.close();
+                } catch (SQLException exception)
+                {
+                    exception.printStackTrace();
+                }
+            }
         }
     }
 }
