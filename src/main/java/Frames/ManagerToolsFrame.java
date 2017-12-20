@@ -6,6 +6,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.sql.SQLException;
 
 public class ManagerToolsFrame extends JFrame implements ActionListener
 {
@@ -45,12 +47,27 @@ public class ManagerToolsFrame extends JFrame implements ActionListener
         ReportGeneratorProcessor processor = new ReportGeneratorProcessor();
         dispose();
 
-        if(actionCommand.equals("member"))
-            processor.generateMemberReports();
-        else if(actionCommand.equals("provider"))
-            processor.generateProviderReports();
-        else if(actionCommand.equals("manager"))
-            processor.generateManagerReports();
+        if(actionCommand.equals("member")) {
+            try {
+                processor.generateMemberReports();
+            } catch (IOException | SQLException e1) {
+                e1.printStackTrace();
+            }
+        }
+        else if(actionCommand.equals("provider")) {
+            try {
+                processor.generateProviderReports();
+            } catch (IOException | SQLException e1) {
+                e1.printStackTrace();
+            }
+        }
+        else if(actionCommand.equals("manager")) {
+            try {
+                processor.generateManagerReports();
+            } catch (IOException | SQLException e1) {
+                e1.printStackTrace();
+            }
+        }
         else
             new DataCenterFrame();
     }

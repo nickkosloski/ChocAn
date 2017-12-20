@@ -7,6 +7,7 @@ import Utils.DatabaseHelper;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -16,11 +17,7 @@ import java.util.List;
 
 public class MemberReportGenerator {
 
-    public void generateMemberReports(){
-        generate();
-    }
-
-    private void generate() {
+    public void generate() throws SQLException, IOException {
         boolean newMember = true;
 
         String memberQuery = "select [mem].[MemberId], " +
@@ -44,46 +41,41 @@ public class MemberReportGenerator {
                 "where [fm].[ServiceProvidedDate] >= DATEADD (week , -1 , GETDATE() ) " +
                 "order by [mem].[MemberId], [fm].[ServiceProvidedDate]";
 
-        try {
-            Connection con = DatabaseHelper.connectToDb();
-            Statement stmt = con.createStatement();
-            ResultSet rs = stmt.executeQuery(memberQuery);
-            if(!rs.next()) return;
-            while (newMember) {
-                String memberId;
-                MemberReport report = new MemberReport();
-                List<ServiceEntry> serviceList = new ArrayList<>();
-                // do the member info
-                report.setNumber(rs.getString("MemberId"));
-                report.setfName(rs.getString("MFName"));
-                report.setlName(rs.getString("MLName"));
-                report.setAddress(rs.getString("Address"));
-                report.setCity(rs.getString("City"));
-                report.setState(rs.getString("State"));
-                report.setZipCode(rs.getString("ZipCode"));
+        Connection con = DatabaseHelper.connectToDb();
+        Statement stmt = con.createStatement();
+        ResultSet rs = stmt.executeQuery(memberQuery);
+        if(!rs.next()) return;
+        while (newMember) {
+            String memberId;
+            MemberReport report = new MemberReport();
+            List<ServiceEntry> serviceList = new ArrayList<>();
+            // do the member info
+            report.setNumber(rs.getString("MemberId"));
+            report.setfName(rs.getString("MFName"));
+            report.setlName(rs.getString("MLName"));
+            report.setAddress(rs.getString("Address"));
+            report.setCity(rs.getString("City"));
+            report.setState(rs.getString("State"));
+            report.setZipCode(rs.getString("ZipCode"));
 
-                memberId = rs.getString("MemberId");
-                while (rs.getString("MemberId").equalsIgnoreCase(memberId)) {
-                    // iterates all services until change in member id
-                    ServiceEntry entry = new ServiceEntry();
-                    entry.setServiceDate(rs.getString("ServiceProvidedDate"));
-                    entry.setProviderFName(rs.getString("PFName"));
-                    entry.setProviderLName(rs.getString("PLName"));
-                    entry.setServiceName(rs.getString("Description"));
-                    serviceList.add(entry);
+            memberId = rs.getString("MemberId");
+            while (rs.getString("MemberId").equalsIgnoreCase(memberId)) {
+                // iterates all services until change in member id
+                ServiceEntry entry = new ServiceEntry();
+                entry.setServiceDate(rs.getString("ServiceProvidedDate"));
+                entry.setProviderFName(rs.getString("PFName"));
+                entry.setProviderLName(rs.getString("PLName"));
+                entry.setServiceName(rs.getString("Description"));
+                serviceList.add(entry);
 
-                    if(!rs.next()) {
-                        newMember = false;
-                        break;
-                    }
+                if(!rs.next()) {
+                    newMember = false;
+                    break;
                 }
-                report.setServices(serviceList);
-                //output report
-                writeReportToFile(writeReportString(report), memberId);
             }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
+            report.setServices(serviceList);
+            //output report
+            writeReportToFile(writeReportString(report), memberId);
         }
 
     }
@@ -128,33 +120,26 @@ public class MemberReportGenerator {
         return report;
     }
 
-    private void writeReportToFile(String data, String memberId){
-        try{
-            // Create new file
-            memberId = memberId.trim();
-            makeReportDirectory();
-            String path="C:\\ChocAn\\MemberReports\\" + memberId + ".txt";
-            File file = new File(path);
+    private void writeReportToFile(String data, String memberId) throws IOException {
+        // Create new file
+        memberId = memberId.trim();
+        makeReportDirectory();
+        String path="C:\\ChocAn\\MemberReports\\" + memberId + ".txt";
+        File file = new File(path);
 
-            // If file doesn't exists, then create it
-            if (!file.exists()) {
-                file.createNewFile();
-            }
-
-            FileWriter fw = new FileWriter(file.getAbsoluteFile());
-            BufferedWriter bw = new BufferedWriter(fw);
-
-            // Write in file
-            bw.write(data);
-
-            // Close connection
-            bw.close();
+        // If file doesn't exists, then create it
+        if (!file.exists()) {
+            file.createNewFile();
         }
-        catch(Exception e){
 
-            // TODO: Handle
-            System.out.println(e);
-        }
+        FileWriter fw = new FileWriter(file.getAbsoluteFile());
+        BufferedWriter bw = new BufferedWriter(fw);
+
+        // Write in file
+        bw.write(data);
+
+        // Close connection
+        bw.close();
 
     }
 

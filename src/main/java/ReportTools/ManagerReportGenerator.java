@@ -7,6 +7,7 @@ import Utils.DatabaseHelper;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -15,11 +16,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ManagerReportGenerator {
-    public void generateManagerReports() {
-        generate();
-    }
 
-    private void generate() {    boolean newMember = true;
+    public void generate() throws SQLException, IOException {
 
         String managerQuery = "select [ProviderId],"
                 + "Count([ProviderId]) as [ProviderConsultationTotal]"
@@ -28,29 +26,23 @@ public class ManagerReportGenerator {
                 + "where [ServiceProvidedDate] >= DATEADD (week , -1 , GETDATE() )"
                 + "group by [ProviderId]";
 
-        try {
-            Connection con = DatabaseHelper.connectToDb();
-            Statement stmt = con.createStatement();
-            ResultSet rs = stmt.executeQuery(managerQuery);
+        Connection con = DatabaseHelper.connectToDb();
+        Statement stmt = con.createStatement();
+        ResultSet rs = stmt.executeQuery(managerQuery);
 
-            ManagerReport report = new ManagerReport();
-            List<ProviderWeek> providerList = new ArrayList<>();
+        ManagerReport report = new ManagerReport();
+        List<ProviderWeek> providerList = new ArrayList<>();
 
-            while (rs.next()) {
-                ProviderWeek providerWeek = new ProviderWeek();
-                providerWeek.setProviderId(rs.getString("ProviderId"));
-                providerWeek.setTotalConsultations(rs.getInt("ProviderConsultationTotal"));
+        while (rs.next()) {
+            ProviderWeek providerWeek = new ProviderWeek();
+            providerWeek.setProviderId(rs.getString("ProviderId"));
+            providerWeek.setTotalConsultations(rs.getInt("ProviderConsultationTotal"));
 //                providerWeek.setTotalFee(rs.getDouble("ProviderTotalFee"));
-                providerList.add(providerWeek);
-            }
-            report.setProviderWeekList(providerList);
-            //output report
-            writeReportToFile(writeReportString(report));
-
-
-        } catch (SQLException e) {
-            e.printStackTrace();
+            providerList.add(providerWeek);
         }
+        report.setProviderWeekList(providerList);
+        //output report
+        writeReportToFile(writeReportString(report));
 
     }
 
@@ -89,33 +81,26 @@ public class ManagerReportGenerator {
         return report;
     }
 
-    private void writeReportToFile(String data){
-        try{
-            // Create new file
-            makeReportDirectory();
-            String path="C:\\ChocAn\\ManagerReports\\" + "ManagerReport" + ".txt";
-            File file = new File(path);
+    private void writeReportToFile(String data) throws IOException{
 
-            // If file doesn't exists, then create it
-            if (!file.exists()) {
-                file.createNewFile();
-            }
+        // Create new file
+        makeReportDirectory();
+        String path="C:\\ChocAn\\ManagerReports\\" + "ManagerReport" + ".txt";
+        File file = new File(path);
 
-            FileWriter fw = new FileWriter(file.getAbsoluteFile());
-            BufferedWriter bw = new BufferedWriter(fw);
-
-            // Write in file
-            bw.write(data);
-
-            // Close connection
-            bw.close();
-        }
-        catch(Exception e){
-
-            // TODO: Handle
-            System.out.println(e);
+        // If file doesn't exists, then create it
+        if (!file.exists()) {
+            file.createNewFile();
         }
 
+        FileWriter fw = new FileWriter(file.getAbsoluteFile());
+        BufferedWriter bw = new BufferedWriter(fw);
+
+        // Write in file
+        bw.write(data);
+
+        // Close connection
+        bw.close();
     }
 
     private void makeReportDirectory() {

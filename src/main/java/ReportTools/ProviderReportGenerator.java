@@ -9,6 +9,7 @@ import Utils.DatabaseHelper;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -17,15 +18,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ProviderReportGenerator {
-    public ProviderReportGenerator(){
 
-    }
-    public void generateProviderReports(){
-        generate();
-    }
-
-    private void generate() {
-        boolean newMember = true;
+    public void generate() throws IOException, SQLException {
+        boolean newProvider = true;
 
         String providerQuery = "select [prov].[FName] as [PFName]," +
                 "[prov].[LName] as [PLName]," +
@@ -52,47 +47,42 @@ public class ProviderReportGenerator {
                 "where [fm].[ServiceProvidedDate] >= DATEADD (week , -1 , GETDATE() )" +
                 "order by [fm].[ServiceProvidedDate]";
 
-        try {
-            Connection con = DatabaseHelper.connectToDb();
-            Statement stmt = con.createStatement();
-            ResultSet rs = stmt.executeQuery(providerQuery);
-            if(!rs.next()) return;
-            while (newMember) {
-                String providerId = rs.getString("ProviderId");
-                ProviderReport report = new ProviderReport();
-                List<ProviderService> serviceList = new ArrayList<ProviderService>();
-                // do the member info
-                report.setNumber(providerId);
-                report.setFName(rs.getString("PFName"));
-                report.setLName(rs.getString("PLName"));
-                report.setAddress(rs.getString("Address"));
-                report.setCity(rs.getString("City"));
-                report.setState(rs.getString("State"));
-                report.setZipCode(rs.getString("ZipCode"));
+        Connection con = DatabaseHelper.connectToDb();
+        Statement stmt = con.createStatement();
+        ResultSet rs = stmt.executeQuery(providerQuery);
+        if(!rs.next()) return;
+        while (newProvider) {
+            String providerId = rs.getString("ProviderId");
+            ProviderReport report = new ProviderReport();
+            List<ProviderService> serviceList = new ArrayList<ProviderService>();
+            // Provider Info Band
+            report.setNumber(providerId);
+            report.setFName(rs.getString("PFName"));
+            report.setLName(rs.getString("PLName"));
+            report.setAddress(rs.getString("Address"));
+            report.setCity(rs.getString("City"));
+            report.setState(rs.getString("State"));
+            report.setZipCode(rs.getString("ZipCode"));
 
-                while (rs.getString("ProviderId").equalsIgnoreCase(providerId)) {
-                    // iterates all services until change in member id
-                    ProviderService entry = new ProviderService();
-                    entry.setServiceDate(rs.getString("ServiceProvidedDate"));
-                    entry.setReceivedDateTime(rs.getString("CurrentDate"));
-                    entry.setMemberFName(rs.getString("MFName"));
-                    entry.setMemberLName(rs.getString("MLName"));
-                    entry.setServiceCode(rs.getString("ServiceCode"));
-                    //entry.setServiceFee(rs.getDouble("ServiceFee"));
-                    serviceList.add(entry);
+            while (rs.getString("ProviderId").equalsIgnoreCase(providerId)) {
+                // iterates all services until change in provider id
+                ProviderService entry = new ProviderService();
+                entry.setServiceDate(rs.getString("ServiceProvidedDate"));
+                entry.setReceivedDateTime(rs.getString("CurrentDate"));
+                entry.setMemberFName(rs.getString("MFName"));
+                entry.setMemberLName(rs.getString("MLName"));
+                entry.setServiceCode(rs.getString("ServiceCode"));
+                //entry.setServiceFee(rs.getDouble("ServiceFee"));
+                serviceList.add(entry);
 
-                    if(!rs.next()) {
-                        newMember = false;
-                        break;
-                    }
+                if(!rs.next()) {
+                    newProvider = false;
+                    break;
                 }
-                report.setServiceList(serviceList);
-                //output report
-                writeReportToFile(writeReportString(report), providerId);
             }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
+            report.setServiceList(serviceList);
+            //output report
+            writeReportToFile(writeReportString(report), providerId);
         }
 
     }
@@ -152,33 +142,23 @@ public class ProviderReportGenerator {
         return report;
     }
 
-    private void writeReportToFile(String data, String providerId){
-        try{
-            // Create new file
-            providerId = providerId.trim();
-            makeReportDirectory();
-            String path="C:\\ChocAn\\ProviderReports\\" + providerId + ".txt";
-            File file = new File(path);
+    private void writeReportToFile(String data, String providerId) throws IOException {
+        // Create new file
+        providerId = providerId.trim();
+        makeReportDirectory();
+        String path="C:\\ChocAn\\ProviderReports\\" + providerId + ".txt";
+        File file = new File(path);
 
-            // If file doesn't exists, then create it
-            if (!file.exists()) {
-                file.createNewFile();
-            }
-
-            FileWriter fw = new FileWriter(file.getAbsoluteFile());
-            BufferedWriter bw = new BufferedWriter(fw);
-
-            // Write in file
-            bw.write(data);
-
-            // Close connection
-            bw.close();
-        }
-        catch(Exception e){
-            // TODO: Handle
-            System.out.println(e);
+        // If file doesn't exists, then create it
+        if (!file.exists()) {
+            file.createNewFile();
         }
 
+        FileWriter fw = new FileWriter(file.getAbsoluteFile());
+        BufferedWriter bw = new BufferedWriter(fw);
+
+        bw.write(data);
+        bw.close();
     }
 
     private void makeReportDirectory() {

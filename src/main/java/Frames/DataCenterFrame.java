@@ -54,5 +54,7 @@ public class DataCenterFrame implements ItemListener
 
         frame.setSize(new Dimension(500, 500));
         frame.setVisible(true);
+
     }
+
 }

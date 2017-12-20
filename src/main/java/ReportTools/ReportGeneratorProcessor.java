@@ -1,5 +1,8 @@
 package ReportTools;
 
+import java.io.IOException;
+import java.sql.SQLException;
+
 public class ReportGeneratorProcessor  {
     private MemberReportGenerator memberReporter;
     private ProviderReportGenerator providerReporter;
@@ -11,16 +14,16 @@ public class ReportGeneratorProcessor  {
         managerReporter = new ManagerReportGenerator();
     }
 
-    public void generateMemberReports() {
-        memberReporter.generateMemberReports();
+    public void generateMemberReports() throws IOException, SQLException {
+        memberReporter.generate();
     }
 
-    public void generateProviderReports(){
-        providerReporter.generateProviderReports();
+    public void generateProviderReports() throws IOException, SQLException {
+        providerReporter.generate();
     }
 
-    public void generateManagerReports() {
-        managerReporter.generateManagerReports();
+    public void generateManagerReports() throws IOException, SQLException {
+        managerReporter.generate();
     }
 
 
