@@ -44,7 +44,7 @@ public class ServiceForm extends JFrame implements ActionListener {
 
             this.setLayout(new GridLayout(19, 1));
 
-
+        System.out.println("HEH?");
 
             message.setForeground(Color.RED);
             this.add(message);
@@ -76,6 +76,7 @@ public class ServiceForm extends JFrame implements ActionListener {
             enterBtn.addActionListener(this);
             enterBtn.setActionCommand("enter");
             this.add(enterBtn);
+            this.isVisible();
         }
 
         public void actionPerformed( ActionEvent e)
