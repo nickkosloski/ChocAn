@@ -12,17 +12,22 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ManagerReportGenerator {
 
+    private DecimalFormat moneyFormat = new DecimalFormat("$##,###.00");
+
     public void generate() throws SQLException, IOException {
 
         String managerQuery = "select [ProviderId],"
-                + "Count([ProviderId]) as [ProviderConsultationTotal]"
-                //+ "--Sum([Fee]) as [ProviderTotalFee],"
-                + "FROM [FORM]"
+                + "Count([ProviderId]) as [ProviderConsultationTotal],"
+                + "Sum([Cost]) as [ProviderTotalFee]"
+                + "FROM [FORM] [F]"
+                + "JOIN [Service] [S]"
+                + "on [F].[ServiceCode] = [S].[ServiceCode]"
                 + "where [ServiceProvidedDate] >= DATEADD (week , -1 , GETDATE() )"
                 + "group by [ProviderId]";
 
@@ -37,7 +42,7 @@ public class ManagerReportGenerator {
             ProviderWeek providerWeek = new ProviderWeek();
             providerWeek.setProviderId(rs.getString("ProviderId"));
             providerWeek.setTotalConsultations(rs.getInt("ProviderConsultationTotal"));
-//                providerWeek.setTotalFee(rs.getDouble("ProviderTotalFee"));
+            providerWeek.setTotalFee(rs.getDouble("ProviderTotalFee"));
             providerList.add(providerWeek);
         }
         report.setProviderWeekList(providerList);
@@ -58,11 +63,9 @@ public class ManagerReportGenerator {
             report += "Provider ID:           "
                     + providerWeek.getProviderId()+ newLine;
             report += "Number Consultations:  "
-                    + data.getTotalWeeklyConsultations().toString().trim() + newLine;
-            report += "Total Fee to Provider: " + "$" + "2.00"
-                    + newLine + newLine;
-                    // TODO: Implement Fee
-                    // + data.getTotalWeeklyFee().toString().trim() + newLine;
+                    + providerWeek.getTotalConsultations().toString().trim() + newLine;
+            report += "Total Fee to Provider: "
+                    + moneyFormat.format(providerWeek.getTotalFee()) + newLine + newLine;
         }
 
         report += "________________________________________" + newLine;
@@ -73,8 +76,8 @@ public class ManagerReportGenerator {
         report += "Total Number of Consultations: "
                 + data.getTotalWeeklyConsultations().toString().trim()
                 + newLine;
-        report += "Total Weekly Fee:              " + "$" + "2"
-                //+ data.getTotalWeeklyFee().toString().trim() //TODO: Implement Fee
+        report += "Total Weekly Fee:              "
+                + moneyFormat.format(data.getTotalWeeklyFee())
                 + newLine;
         report += "________________________________________";
 

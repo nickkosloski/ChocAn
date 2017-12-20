@@ -14,10 +14,13 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ProviderReportGenerator {
+
+    private DecimalFormat moneyFormat = new DecimalFormat("$##,###.00");
 
     public void generate() throws IOException, SQLException {
         boolean newProvider = true;
@@ -30,13 +33,15 @@ public class ProviderReportGenerator {
                 "[prov].[State]," +
                 "[prov].[ZipCode]," +
                 "CONVERT(varchar(10),[fm].[ServiceProvidedDate],110) + ' '" +
-                        " + CONVERT(varchar(8), [fm].[ServiceProvidedDate], 108)" +
-                " AS [ServiceProvidedDate]," +
-                "[fm].[CurrentDate]," +
+                    " AS [ServiceProvidedDate]," +
+                "CONVERT(varchar(10),[fm].[CurrentDate],110) + ' ' + " +
+                        "CONVERT(varchar(8),[fm].[CurrentDate],108)" +
+                        "AS [CurrentDate]," +
                 "[mem].[FName] AS [MFName]," +
                 "[mem].[LName] AS [MLName]," +
                 "[mem].[MemberId]," +
-                "[serv].[ServiceCode]" +
+                "[serv].[ServiceCode]," +
+                "[serv].[Cost]" +
                 "from [FORM] as [fm]" +
                 "join [Member] [mem]" +
                 "on [fm].[MemberId] = [mem].[MemberId]" +
@@ -72,7 +77,7 @@ public class ProviderReportGenerator {
                 entry.setMemberFName(rs.getString("MFName"));
                 entry.setMemberLName(rs.getString("MLName"));
                 entry.setServiceCode(rs.getString("ServiceCode"));
-                //entry.setServiceFee(rs.getDouble("ServiceFee"));
+                entry.setServiceFee(rs.getDouble("Cost"));
                 serviceList.add(entry);
 
                 if(!rs.next()) {
@@ -126,17 +131,17 @@ public class ProviderReportGenerator {
             report += "Service Code:         "
                     + service.getServiceCode().trim()
                     + newLine;
-//            report += "Service Fee:          "
-//                    + service.getServiceFee().toString().trim();
+            report += "Service Fee:          "
+                    + moneyFormat.format(service.getServiceFee());
             report += newLine;
         }
         report += " _______________________" + newLine;
         report += "|Total Consultations: "
-                + data.getNumConsultations() + " |"
+                + data.getNumConsultations()
                 + newLine;
-//        report += "|Total Fee: "
-//                + data.getTotalFee() + " |"
-//                + newLine;
+        report += "|Total Fee:           "
+                + moneyFormat.format(data.getTotalFee())
+                + newLine;
         report += " _______________________";
 
         return report;

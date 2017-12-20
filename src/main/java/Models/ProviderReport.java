@@ -1,5 +1,6 @@
 package Models;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ProviderReport {
@@ -13,6 +14,11 @@ public class ProviderReport {
     private List<ProviderService> serviceList;
     private int numConsultations = 0;
     private Double totalFee;
+
+    public ProviderReport(){
+        serviceList = new ArrayList<>();
+        totalFee = 0.0;
+    }
 
     public int getNumConsultations() {
         return serviceList.size();

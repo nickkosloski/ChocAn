@@ -16,7 +16,7 @@ public class Resources
     {
        try {
            Properties prop = new Properties();
-           InputStream input = ChocAnServiceDriver.class.getResourceAsStream("/Config.properties");
+           input = ChocAnServiceDriver.class.getResourceAsStream("/Config.properties");
 
            prop.load(input);
 
