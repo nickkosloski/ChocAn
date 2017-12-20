@@ -16,15 +16,6 @@ import static javax.swing.JOptionPane.ERROR_MESSAGE;
 public class ServiceFee extends JFrame {
     Connection con = DatabaseHelper.connectToDb();
 
-
-
-
-    Button enterBtn = new Button("Enter");
-
-    TextField dateTxt = new TextField("", 9);
-    TextField providerNumTxt = new TextField("", 9);
-    TextField memNumTxt = new TextField("", 9);
-    TextField serviceCodeTxt = new TextField("", 6);
     TextField commentsTxt = new TextField("", 100);
 
     JLabel message = new JLabel(" ");

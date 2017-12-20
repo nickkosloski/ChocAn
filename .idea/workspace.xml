@@ -2,10 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="25f6be8b-4707-4f68-bd40-19882f2a599a" name="Default" comment="">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/Terminal/providerValidation.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/Terminal/MemberValidate.java" afterPath="$PROJECT_DIR$/src/main/java/Terminal/MemberValidate.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/Terminal/ServiceFee.java" afterPath="$PROJECT_DIR$/src/main/java/Terminal/ServiceFee.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/Terminal/ServiceForm.java" afterPath="$PROJECT_DIR$/src/main/java/Terminal/ServiceForm.java" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/target/" />
@@ -35,11 +35,23 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="MemberValidate.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="MemberValidate.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/Terminal/MemberValidate.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="357">
-              <caret line="81" column="72" lean-forward="false" selection-start-line="81" selection-start-column="72" selection-end-line="81" selection-end-column="72" />
+            <state relative-caret-position="119">
+              <caret line="61" column="0" lean-forward="false" selection-start-line="61" selection-start-column="0" selection-end-line="61" selection-end-column="0" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="providerValidation.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/main/java/Terminal/providerValidation.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-20">
+              <caret line="27" column="19" lean-forward="false" selection-start-line="27" selection-start-column="19" selection-end-line="27" selection-end-column="19" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -50,8 +62,8 @@
       <file leaf-file-name="ServiceFee.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/Terminal/ServiceFee.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="388">
-              <caret line="49" column="0" lean-forward="true" selection-start-line="49" selection-start-column="0" selection-end-line="49" selection-end-column="0" />
+            <state relative-caret-position="68">
+              <caret line="15" column="35" lean-forward="true" selection-start-line="15" selection-start-column="32" selection-end-line="15" selection-end-column="38" />
               <folding />
             </state>
           </provider>
@@ -72,20 +84,8 @@
       <file leaf-file-name="DataCenterFrame.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/Frames/DataCenterFrame.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="405">
-              <caret line="54" column="44" lean-forward="false" selection-start-line="54" selection-start-column="8" selection-end-line="54" selection-end-column="47" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ManagerLoginFrame.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/Frames/ManagerLoginFrame.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="459">
-              <caret line="27" column="8" lean-forward="false" selection-start-line="27" selection-start-column="8" selection-end-line="27" selection-end-column="8" />
+            <state relative-caret-position="422">
+              <caret line="55" column="31" lean-forward="true" selection-start-line="55" selection-start-column="31" selection-end-line="55" selection-end-column="31" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -173,8 +173,9 @@
         <option value="$PROJECT_DIR$/src/main/java/Frames/BasicFrame.java" />
         <option value="$PROJECT_DIR$/src/main/java/DataCenter/ChocAnServiceDriver.java" />
         <option value="$PROJECT_DIR$/src/main/java/Terminal/ServiceForm.java" />
-        <option value="$PROJECT_DIR$/src/main/java/Terminal/ServiceFee.java" />
         <option value="$PROJECT_DIR$/src/main/java/Terminal/MemberValidate.java" />
+        <option value="$PROJECT_DIR$/src/main/java/Terminal/ServiceFee.java" />
+        <option value="$PROJECT_DIR$/src/main/java/Terminal/providerValidation.java" />
       </list>
     </option>
   </component>
@@ -472,7 +473,14 @@
       <option name="project" value="LOCAL" />
       <updated>1513736736670</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="Merge branches 'Terminal' and 'master' of https://github.com/nickkosloski/ChocAn into Terminal&#10;&#10;# Conflicts:&#10;#&#9;src/main/java/DataCenter/ChocAnServiceDriver.java&#10;#&#9;src/main/java/Frames/BasicFrame.java">
+      <created>1513737513031</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1513737513031</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -766,16 +774,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/Frames/DataCenterFrame.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="405">
-          <caret line="54" column="44" lean-forward="false" selection-start-line="54" selection-start-column="8" selection-end-line="54" selection-end-column="47" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/DataCenter/Timer.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="17">
@@ -830,18 +828,38 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/Terminal/ServiceFee.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/Frames/DataCenterFrame.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="388">
-          <caret line="49" column="0" lean-forward="true" selection-start-line="49" selection-start-column="0" selection-end-line="49" selection-end-column="0" />
-          <folding />
+        <state relative-caret-position="422">
+          <caret line="55" column="31" lean-forward="true" selection-start-line="55" selection-start-column="31" selection-end-line="55" selection-end-column="31" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/Terminal/MemberValidate.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="357">
-          <caret line="81" column="72" lean-forward="false" selection-start-line="81" selection-start-column="72" selection-end-line="81" selection-end-column="72" />
+        <state relative-caret-position="119">
+          <caret line="61" column="0" lean-forward="false" selection-start-line="61" selection-start-column="0" selection-end-line="61" selection-end-column="0" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/Terminal/ServiceFee.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="68">
+          <caret line="15" column="35" lean-forward="true" selection-start-line="15" selection-start-column="32" selection-end-line="15" selection-end-column="38" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/Terminal/providerValidation.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-20">
+          <caret line="27" column="19" lean-forward="false" selection-start-line="27" selection-start-column="19" selection-end-line="27" selection-end-column="19" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
