@@ -79,7 +79,7 @@ public class MemberValidate {
                 }
                 else {
 
-                    System.out.println("Code entered is : " + code + "\n service is: " + rs.getString("Description"));
+                    System.out.println("Code entered is : " + code + "\nservice is: " + rs.getString("Description"));
                     System.out.println("Is this the correct service?");
                     String yesNo = sys.next();
                     while (loop) {

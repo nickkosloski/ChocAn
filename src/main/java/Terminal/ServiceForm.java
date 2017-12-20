@@ -33,7 +33,7 @@ public class ServiceForm extends JFrame implements ActionListener {
 
     public JComboBox statusList = new JComboBox(statuses);
 
-    public ServiceForm(String Date, String code, String memID) {
+    public ServiceForm(String Date, String code, String memID) throws SQLException {
 
             this.setLayout(new GridLayout(19, 1));
 
@@ -70,6 +70,8 @@ public class ServiceForm extends JFrame implements ActionListener {
             this.add(enterBtn);
             this.setSize(new Dimension(500, 500));
             this.setVisible(true);
+
+            ServiceFee popup = new ServiceFee(code);
 
         }
 
@@ -113,6 +115,7 @@ public class ServiceForm extends JFrame implements ActionListener {
                     }
                 }
                 dispose();
+
             }
         }
     }
