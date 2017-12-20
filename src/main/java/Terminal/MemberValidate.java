@@ -1,6 +1,7 @@
 package Terminal;
 import Utils.DatabaseHelper;
 
+import java.io.IOException;
 import java.sql.*;
 import java.util.Scanner;
 
@@ -10,12 +11,12 @@ public class MemberValidate {
     String type = "MEMBER";
     Connection con = DatabaseHelper.connectToDb();
 
-    public MemberValidate() throws SQLException {
+    public MemberValidate() throws SQLException, IOException {
         boolean run = true;
 
         while (run) {
             System.out.println("Make a selection:");
-            System.out.println("1) Enter a member \n2) Show providers weekly report for validation");
+            System.out.println("1) Enter a member \n2) Show providers weekly report for validation\n3) Get a list of services");
             int selection = sys.nextInt();
             if (selection == 1) {
                 System.out.print("Please Swipe Members Card:");
@@ -69,11 +70,17 @@ public class MemberValidate {
                 boolean result = rs.next();
                 while(!result) {
                     System.out.println("That is not a valid Provider number, try again:");
-                    provNum = sys.next();
+                    provNum = sys.next();       //broken for some reason
                     result = rs.next();
                 }
 
                 providerValidation providerVal = new providerValidation(provNum);
+            }
+            else if (selection ==3){
+                GetList list = new GetList();
+            }
+            else{
+                System.out.println("you done screwed the pooch son");
             }
         }
     }
