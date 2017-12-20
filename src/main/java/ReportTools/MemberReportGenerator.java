@@ -127,7 +127,6 @@ public class MemberReportGenerator {
         String path="C:\\ChocAn\\MemberReports\\" + memberId + ".txt";
         File file = new File(path);
 
-        // If file doesn't exists, then create it
         if (!file.exists()) {
             file.createNewFile();
         }

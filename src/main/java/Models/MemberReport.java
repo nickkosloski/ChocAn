@@ -6,6 +6,11 @@ public class MemberReport {
     private String fName;
     private String lName;
     private String number;
+    private String address;
+    private String city;
+    private String state;
+    private String zipCode;
+    private List<ServiceEntry> services;
 
     public String getfName() {
         return fName;
@@ -70,12 +75,5 @@ public class MemberReport {
     public void setServices(List<ServiceEntry> services) {
         this.services = services;
     }
-
-    private String address;
-    private String city;
-    private String state;
-    private String zipCode;
-    private List<ServiceEntry> services;
-
 
 }

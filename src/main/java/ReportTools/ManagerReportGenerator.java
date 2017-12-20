@@ -91,7 +91,6 @@ public class ManagerReportGenerator {
         String path="C:\\ChocAn\\ManagerReports\\" + "ManagerReport" + ".txt";
         File file = new File(path);
 
-        // If file doesn't exists, then create it
         if (!file.exists()) {
             file.createNewFile();
         }

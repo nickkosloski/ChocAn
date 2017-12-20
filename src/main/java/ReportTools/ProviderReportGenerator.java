@@ -1,9 +1,7 @@
 package ReportTools;
 
-import Models.MemberReport;
 import Models.ProviderReport;
 import Models.ProviderService;
-import Models.ServiceEntry;
 import Utils.DatabaseHelper;
 
 import java.io.BufferedWriter;
@@ -154,7 +152,6 @@ public class ProviderReportGenerator {
         String path="C:\\ChocAn\\ProviderReports\\" + providerId + ".txt";
         File file = new File(path);
 
-        // If file doesn't exists, then create it
         if (!file.exists()) {
             file.createNewFile();
         }

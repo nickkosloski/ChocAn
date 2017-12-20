@@ -26,7 +26,6 @@ public class ChocAnServiceDriver {
         date.set(Calendar.MINUTE, 0);
         date.set(Calendar.SECOND, 0);
         date.set(Calendar.MILLISECOND, 0);
-        // Schedule to run every Sunday in midnight
         timer.schedule(
                 new ReportGenerator(),
                 date.getTime(),

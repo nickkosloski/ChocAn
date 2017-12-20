@@ -2,6 +2,9 @@ package Models;
 
 public class ServiceEntry {
     private String serviceDate;
+    private String providerFName;
+    private String providerLName;
+    private String serviceName;
 
     public String getServiceDate() {
         return serviceDate;
@@ -35,7 +38,4 @@ public class ServiceEntry {
         this.serviceName = serviceName;
     }
 
-    private String providerFName;
-    private String providerLName;
-    private String serviceName;
 }
