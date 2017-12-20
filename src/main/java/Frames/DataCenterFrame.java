@@ -7,7 +7,7 @@ import javax.swing.*;
 public class DataCenterFrame implements ItemListener
 {
     JPanel cards;
-    String comboBoxItems[] = {"Add Member", "Edit Member", "Delete Member", "Add Provider", "Edit Provider", "Delete Provider", "Manager Login"};
+    String comboBoxItems[] = {"Add Member", "Edit Member", "Delete Member", "Add Provider", "Edit Provider", "Delete Provider", "Manager Tools"};
 
     public void addComponentToPane(Container pane)
     {
@@ -23,7 +23,7 @@ public class DataCenterFrame implements ItemListener
         JPanel addProvider = new AddFrame("Provider");
         JPanel editProvider = new EditFrameGetId("Provider");
         JPanel deleteProvider = new DeleteFrame("Provider");
-        JPanel managerLogin = new ManagerLoginFrame();
+        JPanel managerTools = new ManagerToolsFrame();
 
         cards = new JPanel(new CardLayout());
         cards.add(addMember, "Add Member");
@@ -32,7 +32,7 @@ public class DataCenterFrame implements ItemListener
         cards.add(addProvider, "Add Provider");
         cards.add(editProvider, "Edit Provider");
         cards.add(deleteProvider, "Delete Provider");
-        cards.add(managerLogin, "Manager Login");
+        cards.add(managerTools, "Manager Tools");
 
         pane.add(comboBoxPane, BorderLayout.PAGE_START);
         pane.add(cards, BorderLayout.CENTER);
@@ -54,5 +54,7 @@ public class DataCenterFrame implements ItemListener
 
         frame.setSize(new Dimension(500, 500));
         frame.setVisible(true);
+
     }
+
 }

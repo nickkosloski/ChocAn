@@ -1,11 +1,17 @@
 package Frames;
 
+import ReportTools.ReportGeneratorProcessor;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.sql.SQLException;
 
-public class ManagerToolsFrame extends JFrame implements ActionListener
+import static javax.swing.JOptionPane.ERROR_MESSAGE;
+
+public class ManagerToolsFrame extends JPanel implements ActionListener
 {
     Button  memberRptBtn = new Button("Member Report");
     Button  providerRptBtn = new Button("Provider Report");
@@ -13,8 +19,6 @@ public class ManagerToolsFrame extends JFrame implements ActionListener
 
     public ManagerToolsFrame()
     {
-        super("ChocAn Data Center");
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLayout(new GridLayout(19,1));
 
         memberRptBtn.addActionListener(this);
@@ -40,17 +44,32 @@ public class ManagerToolsFrame extends JFrame implements ActionListener
     public void actionPerformed(ActionEvent e)
     {
         String actionCommand = e.getActionCommand();
-        dispose();
+        ReportGeneratorProcessor processor = new ReportGeneratorProcessor();
 
-        if(actionCommand.equals("member"))
-            //Do something for member Reports, you can take out println
-            System.out.println("Member");
-        else if(actionCommand.equals("provider"))
-            //Do something for provider Reports, you can take out println
-            System.out.println("Provider");
-        else if(actionCommand.equals("manager"))
-            //Do something for manager Reports, you can take out println
-            System.out.println("Manager");
+        if(actionCommand.equals("member")) {
+            try {
+                processor.generateMemberReports();
+                JOptionPane.showMessageDialog(this, "Completed member reports. Check C:\\ChocAn\\MemberReports for files.");
+            } catch (IOException | SQLException e1) {
+                JOptionPane.showMessageDialog(this, "Error in member report:  " +e1.getMessage(),"Error Message", ERROR_MESSAGE);
+            }
+        }
+        else if(actionCommand.equals("provider")) {
+            try {
+                processor.generateProviderReports();
+                JOptionPane.showMessageDialog(this, "Completed provider reports. Check C:\\ChocAn\\ProviderReports for files.");
+            } catch (IOException | SQLException e1) {
+                JOptionPane.showMessageDialog(this, "Error in provider report:  " +e1.getMessage(),"Error Message", ERROR_MESSAGE);
+            }
+        }
+        else if(actionCommand.equals("manager")) {
+            try {
+                processor.generateManagerReports();
+                JOptionPane.showMessageDialog(this, "Completed manager reports. Check C:\\ChocAn\\ManagerReports for files.");
+            } catch (IOException | SQLException e1) {
+                JOptionPane.showMessageDialog(this, "Error in manager report:  " +e1.getMessage(),"Error Message", ERROR_MESSAGE);
+            }
+        }
         else
             new DataCenterFrame();
     }
