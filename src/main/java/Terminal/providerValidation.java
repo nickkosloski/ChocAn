@@ -43,7 +43,7 @@ public class providerValidation extends JFrame{
     public String formatQueryLine(String provNum) throws SQLException {
         String queryLine = "";
         Statement stmt = con.createStatement();
-        String queryStmt = "select * from PROVIDER where ServiceCode =  '" + provNum + "'";
+        String queryStmt = "select * from PROVIDER where ProviderId =  '" + provNum + "'";
         ResultSet rs = stmt.executeQuery(queryStmt);
 
         while(!rs.next())

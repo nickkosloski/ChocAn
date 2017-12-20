@@ -63,7 +63,7 @@ public class MemberValidate {
                 System.out.println("Enter a provider Number");
                 String provNum = sys.next();
                 Statement stmt = con.createStatement();
-                String queryStmt = "select * from PROVIDER where MemberId =  '" + provNum + "'";
+                String queryStmt = "select * from PROVIDER where ProviderId =  '" + provNum + "'";
                 ResultSet rs = stmt.executeQuery(queryStmt);
 
                 boolean result = rs.next();
